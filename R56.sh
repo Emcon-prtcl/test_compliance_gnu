@@ -6,7 +6,7 @@ source "$SCRIPT_DIR/common_functions.sh"
 print_header "R56" "security"
 
 TOTAL=$((TOTAL + 1))
-# Prend un de temps
+# Prend un peu de temps
 suid_files=$(find / -type f -perm /6000 2>/dev/null)
 
 if [ -z "$suid_files" ]; then
