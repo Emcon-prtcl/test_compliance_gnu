@@ -1,15 +1,22 @@
 #!/bin/bash
 
-echo "R36 - Modifier la valeur par défaut de UMASK"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common_functions.sh"
 
-CURRENT_UMASK=$(umask)
+print_header "R36" "users"
 
-# Affiche la valeur actuelle
-echo "UMASK actuelle : $CURRENT_UMASK"
+TOTAL=$((TOTAL + 1))
 
-# Compare avec la valeur attendue
-if [ "$CURRENT_UMASK" = 0077 ]; then
-    echo "----> Conforme"
+
+if grep -q "umask 0077" /etc/profile 2>/dev/null; then
+    echo -e "${GREEN}[OK]${NC} UMASK shells configuré à 0077 dans /etc/profile"
+    echo ""
+    PASSED=$((PASSED + 1))
 else
-    echo "----> Non conforme, 'umask 0077' pour corriger)"
+    echo -e "${RED}[ÉCHEC]${NC} UMASK shells non configuré à 0077"
+    echo "  Ajouter 'umask 0077' dans /etc/profile"
+    echo ""
+    FAILED=$((FAILED + 1))
 fi
+
+print_summary
